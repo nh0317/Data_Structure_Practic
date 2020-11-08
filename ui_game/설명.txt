@@ -1,0 +1,8 @@
+ 올려주신 game.cpp game.hpp test.cpp를 사용해서 ncurses로 ui를 만들어 봤습니다. ncurses를 처음 사용해봐서 일단 기본적인 동작만 가능하게 모양만 만었습니다. 코드가 많이 지저분 이번주 내로 잘 함수로 바꾸어서 다시 올리겠습니다.
+ 방향키로 움직이고(게임플레이는 a,d키) 엔터키를 누르면 해당 동작으로 넘어갑니다.
+
+GAME START : 게임실행, 클리어또는 실패시 현재는 프로그램 종료
+GAME EXPLAIN : 동작X
+RANKING : 동작X
+GAME EXIT : 종료
+
