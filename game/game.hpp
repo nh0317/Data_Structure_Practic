@@ -12,9 +12,12 @@
 
 using namespace std;
 
+#define TOPY 4 //장애물 출력 위치 y값
+#define TOPX 1 //장애물 출력 위치 x값
+
 //$게임 화면 크기 설정
-#define WIDTH 43
-#define HEIGHT 20
+#define WIDTH 44
+#define HEIGHT 24
 
 //$스테이지의 길이(스테이지당 최대 장애물 수)
 #define MAXOB 10
@@ -42,7 +45,7 @@ class Character {
                                         '\\', '|', ' ', '\\'};
     array<array<char, 3>, 3> motionL = {' ',  'O', ' ', '/', 'T',
                                         '\\', '/', ' ', '|'};
-    array<int, 2> location = {HEIGHT - 3, (int)(WIDTH - 3) / 2};
+    array<int, 2> location = {HEIGHT - 3, (int)(WIDTH - 3) / 2 + TOPX};
 };
 
 //장애물 클래스
@@ -58,13 +61,15 @@ class Obstacle {
 
   private:
     int length;
-    array<int, 2> location = {0, 0};
+    array<int, 2> location = {TOPY, TOPX};
 };
 
 //$회피한 장애물의 갯수를 반환
 int nemberOfObstacle(vector<Obstacle> &obstacle);
 
 //$게임 시작 함수
+//충돌할 경우 0반환
+//최대 장애물의 수를 회피한 경우 회피한 장애물의 수 반환
 int game(int time, Character &character, vector<Obstacle> &obstacle);
 
 //장애물을 발생시키는 함수
@@ -76,5 +81,4 @@ bool crash(int y, int x);
 //컴파일용
 void showBoard();
 void showState(vector<Obstacle> &obstacle, int time);
-
 #endif
