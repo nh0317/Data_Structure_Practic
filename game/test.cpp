@@ -15,6 +15,7 @@
 
 using namespace std;
 #include "game.hpp"
+#include "ui.hpp"
 #include <iostream>
 #include <ncurses.h>
 #include <string.h>
@@ -39,12 +40,6 @@ int main(void) {
     noecho();
     cbreak();
 
-    //색깔모드 시작
-    // start_color();
-
-    //커서 안보이게 (0~2)
-    curs_set(2);
-
     //특수키 사용 (방향키 등)
     keypad(stdscr, TRUE);
 
@@ -57,24 +52,7 @@ int main(void) {
     // 커서의 위치 확인
     int position = 1;
 
-    WINDOW *my_win = newwin(HEIGHT, WIDTH, start_y, start_x);
-    refresh();
-
-    box(my_win, 0, 0);
-    explain();
-    mvwprintw(my_win, HEIGHT / 2 + 3, (WIDTH - strlen("GAME EXIT")) / 2,
-              "GAME EXIT");
-    mvwprintw(my_win, HEIGHT / 2 + 1, (WIDTH - strlen("RANKING")) / 2,
-              "RANKING");
-    mvwprintw(my_win, HEIGHT / 2 - 1, (WIDTH - strlen("GAME EXPLAIN")) / 2,
-              "GAME EXPLAIN");
-    init_pair(1, COLOR_WHITE, COLOR_BLACK); //현재 미사용
-    init_pair(2, COLOR_BLACK, COLOR_WHITE); //현재 미사용
-    // attron(COLOR_PAIR(1));
-    mvwprintw(my_win, HEIGHT / 2 - 3, (WIDTH - strlen("GAME START")) / 2,
-              "GAME START");
-
-    wrefresh(my_win);
+    setWindow(HEIGHT, WIDTH, start_x, start_y);
 
     // 키 입력시까지 반복
     while ((ch = getch()) != KEY_F(8)) {
@@ -122,7 +100,11 @@ int main(void) {
             } else if (position == 2) {
                 explain();
                 // GAME EXPLAIN 출력
-                break;
+                if (getch() == ENTER) {
+                    setWindow(HEIGHT, WIDTH, start_x, start_y);
+                    refresh();
+                    break;
+                }
             } else if (position == 3) {
                 // RANKING 출력
                 break;
@@ -134,69 +116,37 @@ int main(void) {
         case KEY_DOWN:
             if (position == 1) {
                 ++position;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 - 1,
-                          (WIDTH - strlen("GAME EXPLAIN")) / 2, "GAME EXPLAIN");
-                wrefresh(my_win);
+                print_explain();
                 break;
             } else if (position == 2) {
                 ++position;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 + 1,
-                          (WIDTH - strlen("RANKING")) / 2, "RANKING");
-                wrefresh(my_win);
+                print_rank();
                 break;
             } else if (position == 3) {
                 ++position;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 + 3,
-                          (WIDTH - strlen("GAME EXIT")) / 2, "GAME EXIT");
-                wrefresh(my_win);
+                print_exit();
                 break;
             } else if (position == 4) {
                 position = 1;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 - 3,
-                          (WIDTH - strlen("GAME START")) / 2, "GAME START");
-                wrefresh(my_win);
+                print_start();
                 break;
             }
         case KEY_UP:
             if (position == 1) {
                 position = 4;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 + 3,
-                          (WIDTH - strlen("GAME EXIT")) / 2, "GAME EXIT");
-                wrefresh(my_win);
+                print_exit();
                 break;
             } else if (position == 2) {
                 --position;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 - 3,
-                          (WIDTH - strlen("GAME START")) / 2, "GAME START");
-                wrefresh(my_win);
+                print_start();
                 break;
             } else if (position == 3) {
                 --position;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 - 1,
-                          (WIDTH - strlen("GAME EXPLAIN")) / 2, "GAME EXPLAIN");
-                wrefresh(my_win);
+                print_explain();
                 break;
             } else if (position == 4) {
                 --position;
-                // attroff(COLOR_PAIR(1));
-                // attron(COLOR_PAIR(2));
-                mvwprintw(my_win, HEIGHT / 2 + 1,
-                          (WIDTH - strlen("RANKING")) / 2, "RANKING");
-                wrefresh(my_win);
+                print_rank();
                 break;
             }
         }
@@ -209,45 +159,45 @@ int main(void) {
     return 0;
 }
 
-//int main(void){
-    // //캐릭터와 장애물 클래스 생성
-    // Character character = Character();
-    // vector<Obstacle> obstacle;
+// int main(void){
+// //캐릭터와 장애물 클래스 생성
+// Character character = Character();
+// vector<Obstacle> obstacle;
 
-    // int time = 1000000; //초기 속도 1초
-    // int cnt = 0;
-    // //스테이지 6개
-    // for (int i = 0; i < STAGE; i++) {
-    //     cnt++;
-    //     if (cnt == STAGE) {
-    //         if (game(time, character, obstacle) != 0) {
-    //             //스테이지를 모두 클리어하는 경우
-    //             initscr();
-    //             clear();
-    //             mvprintw(HEIGHT / 2, WIDTH / 2, "CLEAR!");
-    //             refresh();
-    //             sleep(3);
-    //             endwin();
-    //             time -= 10000; // 속도 증가 적당히 설정했습니다.
-    //         } else
-    //             break;
-    //     }
+// int time = 1000000; //초기 속도 1초
+// int cnt = 0;
+// //스테이지 6개
+// for (int i = 0; i < STAGE; i++) {
+//     cnt++;
+//     if (cnt == STAGE) {
+//         if (game(time, character, obstacle) != 0) {
+//             //스테이지를 모두 클리어하는 경우
+//             initscr();
+//             clear();
+//             mvprintw(HEIGHT / 2, WIDTH / 2, "CLEAR!");
+//             refresh();
+//             sleep(3);
+//             endwin();
+//             time -= 10000; // 속도 증가 적당히 설정했습니다.
+//         } else
+//             break;
+//     }
 
-    //     //장애물에 충돌하지 않으면 게임 실행
-    //     else if (game(time, character, obstacle) != 0) {
-    //         initscr();
-    //         clear();
-    //         mvprintw(HEIGHT / 2, WIDTH / 2, "next..");
-    //         refresh();
-    //         sleep(1);
-    //         clear();
-    //         endwin();
-    //         time -= 5000; // 속도 증가 적당히 설정했습니다.
-    //     }
-    //     //장애물에 충돌하여 게임이 종료되는 경우
-    //     else {
-    //         break;
-    //     }
-    // }
-    // return 0;
+//     //장애물에 충돌하지 않으면 게임 실행
+//     else if (game(time, character, obstacle) != 0) {
+//         initscr();
+//         clear();
+//         mvprintw(HEIGHT / 2, WIDTH / 2, "next..");
+//         refresh();
+//         sleep(1);
+//         clear();
+//         endwin();
+//         time -= 5000; // 속도 증가 적당히 설정했습니다.
+//     }
+//     //장애물에 충돌하여 게임이 종료되는 경우
+//     else {
+//         break;
+//     }
+// }
+// return 0;
 //}
