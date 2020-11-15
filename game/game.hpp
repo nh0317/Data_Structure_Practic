@@ -16,7 +16,9 @@ using namespace std;
 #define TOPX 1 //장애물 출력 위치 x값
 
 //$게임 화면 크기 설정
-#define WIDTH 44
+//#define WIDTH 44
+//#define HEIGHT 24
+#define WIDTH 80
 #define HEIGHT 24
 
 //$스테이지의 길이(스테이지당 최대 장애물 수)
@@ -63,6 +65,9 @@ class Obstacle {
     int length;
     array<int, 2> location = {TOPY, TOPX};
 };
+
+//게임 설명 화면
+void explain();
 
 //$회피한 장애물의 갯수를 반환
 int nemberOfObstacle(vector<Obstacle> &obstacle);

@@ -8,6 +8,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <vector>
+#include <string.h>
 using namespace std;
 
 array<array<int, WIDTH>, HEIGHT> Board = {0};
@@ -32,6 +33,43 @@ void uiBox() {
         printw("-");
     }
 }
+
+// game 설명창
+void explain() {
+    //커서모드 시작
+    initscr();
+    // init 기본모드 설정
+    noecho();
+    cbreak();
+    //커서 안보이게 (0~2)
+    curs_set(2);
+
+    //특수키 사용 (방향키 등)
+    keypad(stdscr, TRUE);
+    //윈도우 테두리 시작위치
+    int start_y = 0, start_x = 0;
+
+    // 커서의 위치 확인
+    int position = 1;
+
+    WINDOW *my_win = newwin(HEIGHT, WIDTH, start_y, start_x);
+    refresh();
+
+    box(my_win, 0, 0);
+
+    mvwprintw(my_win, HEIGHT / 2 - 3, (WIDTH - strlen("1. Operate with a directional key")) / 2,
+              "1. Operat with a directional key");
+    mvwprintw(my_win, HEIGHT / 2 - 1, (WIDTH - strlen("2. 'Number of obstacles avoided', 'Stage speed' displayed at top of screen")) / 2,
+              "2. 'Number of obstacles avoided', 'Stage speed' displayed at top of screen");
+    mvwprintw(my_win, HEIGHT / 2 + 1, (WIDTH - strlen("3. A total of 6 stages")) / 2,
+              "3. a total of 6 stages");
+    mvwprintw(my_win, HEIGHT / 2 + 3, (WIDTH - strlen("4. Increase the stage whenever 10 obstructions are avoided")) / 2,
+              "4. Up the stage whenever 10 obstructions are avoided");
+    wrefresh(my_win);
+
+    // 엔터쳐서 돌아가기
+}
+
 //$게임 시작 함수
 int game(int time, Character &character, vector<Obstacle> &obstacle) {
     int input;
@@ -44,13 +82,14 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
 
+    explain();
+
     //초기 화면
     character.showD();
     uiBox();
 
     //게임 시작
     while (true) {
-
         generateObstacle(obstacle);
         //$게임에 대한 정보가 출력됨
         //지금은 회피한 장애물의 수, time 출력
