@@ -100,11 +100,12 @@ int main(void) {
             } else if (position == 2) {
                 explain();
                 // GAME EXPLAIN 출력
-                if (getch() == ENTER) {
-                    setWindow(HEIGHT, WIDTH, start_x, start_y);
-                    refresh();
-                    break;
+                while (getch() != ENTER) {
+                    sleep(0);
                 }
+                setWindow(HEIGHT, WIDTH, start_x, start_y);
+                refresh();
+                break;
             } else if (position == 3) {
                 // RANKING 출력
                 break;
