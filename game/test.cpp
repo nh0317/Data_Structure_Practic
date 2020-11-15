@@ -1,17 +1,7 @@
-// #include "game.hpp"
-// #include <iostream>
-// #include <ncurses.h>
-// #include <time.h>
-// #include <unistd.h>
-// #include <vector>
-// #include <string.h>
-
-// //게임 함수를 실행하기 위한 테스트 코드입니다.
-// //참고만하셔도 좋습니다.
-// // ui는 생각하지 않았습니다.
-// //지금은 스테이지가 이어서 시작됩니다.
-
-// #define STAGE 6 //스테이지의 개수
+// 게임 함수를 실행하기 위한 테스트 코드입니다.
+// 참고만하셔도 좋습니다.
+// ui는 생각하지 않았습니다.
+// 지금은 스테이지가 이어서 시작됩니다.
 
 using namespace std;
 #include "game.hpp"
@@ -27,11 +17,11 @@ using namespace std;
 #define STAGE 6  //스테이지의 개수
 
 int main(void) {
-    Character character = Character(); // test.cpp
-    vector<Obstacle> obstacle;         // test.cpp
+    Character character = Character();
+    vector<Obstacle> obstacle;
 
-    int time = 1000000; // test.cpp
-    int cnt = 0;        // test.cpp
+    int time = 1000000;
+    int cnt = 0;
 
     //커서모드 시작
     initscr();
@@ -52,14 +42,14 @@ int main(void) {
     // 커서의 위치 확인
     int position = 1;
 
-    setWindow(HEIGHT, WIDTH, start_x, start_y);
+    setWindow1(HEIGHT, WIDTH, start_x, start_y);
 
     // 키 입력시까지 반복
     while ((ch = getch()) != KEY_F(8)) {
         switch (ch) {
         case ENTER:
             if (position == 1) {
-                // GAME START 출력  test.cpp
+                // GAME START 출력
                 clear();
                 for (int i = 0; i < STAGE; i++) {
                     cnt++;
@@ -103,7 +93,8 @@ int main(void) {
                 while (getch() != ENTER) {
                     sleep(0);
                 }
-                setWindow(HEIGHT, WIDTH, start_x, start_y);
+                setWindow1(HEIGHT, WIDTH, start_x, start_y);
+                print_explain();
                 refresh();
                 break;
             } else if (position == 3) {
@@ -159,46 +150,3 @@ int main(void) {
     endwin();
     return 0;
 }
-
-// int main(void){
-// //캐릭터와 장애물 클래스 생성
-// Character character = Character();
-// vector<Obstacle> obstacle;
-
-// int time = 1000000; //초기 속도 1초
-// int cnt = 0;
-// //스테이지 6개
-// for (int i = 0; i < STAGE; i++) {
-//     cnt++;
-//     if (cnt == STAGE) {
-//         if (game(time, character, obstacle) != 0) {
-//             //스테이지를 모두 클리어하는 경우
-//             initscr();
-//             clear();
-//             mvprintw(HEIGHT / 2, WIDTH / 2, "CLEAR!");
-//             refresh();
-//             sleep(3);
-//             endwin();
-//             time -= 10000; // 속도 증가 적당히 설정했습니다.
-//         } else
-//             break;
-//     }
-
-//     //장애물에 충돌하지 않으면 게임 실행
-//     else if (game(time, character, obstacle) != 0) {
-//         initscr();
-//         clear();
-//         mvprintw(HEIGHT / 2, WIDTH / 2, "next..");
-//         refresh();
-//         sleep(1);
-//         clear();
-//         endwin();
-//         time -= 5000; // 속도 증가 적당히 설정했습니다.
-//     }
-//     //장애물에 충돌하여 게임이 종료되는 경우
-//     else {
-//         break;
-//     }
-// }
-// return 0;
-//}

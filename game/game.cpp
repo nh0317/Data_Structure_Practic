@@ -1,14 +1,15 @@
 #include "game.hpp"
+#include "ui.hpp"
 #include <array>
 #include <iostream>
 #include <list>
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 #include <vector>
-#include <string.h>
 using namespace std;
 
 array<array<int, WIDTH>, HEIGHT> Board = {0};
@@ -16,6 +17,7 @@ int Obstacle::total = 0;
 
 // 게임 화면 ui
 void uiBox() {
+    //오류x
     move(0, 0);
     for (int i = 0; i <= WIDTH; i++) {
         printw("-");
@@ -32,6 +34,13 @@ void uiBox() {
     for (int i = 0; i <= WIDTH; i++) {
         printw("-");
     }
+
+    //오류o : 라이브러리 사용해서 ui출력시 캐릭터 출력 안되는 버그
+    // clear() 사용시 캐릭터가 출력이 안됩니다.
+    /*
+    setWindow2(3, WIDTH + 2, 0, 0);
+    setWindow2(HEIGHT, WIDTH + 2, 0, 3);
+    */
 }
 
 // game 설명창
@@ -41,8 +50,6 @@ void explain() {
     // init 기본모드 설정
     noecho();
     cbreak();
-    //커서 안보이게 (0~2)
-    curs_set(2);
 
     //특수키 사용 (방향키 등)
     keypad(stdscr, TRUE);
@@ -52,20 +59,26 @@ void explain() {
     // 커서의 위치 확인
     int position = 1;
 
-    WINDOW *my_win = newwin(HEIGHT, WIDTH, start_y, start_x);
+    setWindow2(HEIGHT, WIDTH, 0, 0);
+
+    mvprintw(HEIGHT / 2 - 3,
+             (WIDTH - strlen("1. Operate with a directional key")) / 2,
+             "1. Operat with a directional key");
+    mvprintw(HEIGHT / 2 - 1,
+             (WIDTH - strlen("2. 'Number of obstacles avoided', 'Stage speed' "
+                             "displayed at top of screen")) /
+                 2,
+             "2. 'Number of obstacles avoided', 'Stage speed' displayed at "
+             "top of screen");
+    mvprintw(HEIGHT / 2 + 1, (WIDTH - strlen("3. A total of 6 stages")) / 2,
+             "3. a total of 6 stages");
+    mvprintw(
+        HEIGHT / 2 + 3,
+        (WIDTH -
+         strlen("4. Increase the stage whenever 10 obstructions are avoided")) /
+            2,
+        "4. Up the stage whenever 10 obstructions are avoided");
     refresh();
-
-    box(my_win, 0, 0);
-
-    mvwprintw(my_win, HEIGHT / 2 - 3, (WIDTH - strlen("1. Operate with a directional key")) / 2,
-              "1. Operat with a directional key");
-    mvwprintw(my_win, HEIGHT / 2 - 1, (WIDTH - strlen("2. 'Number of obstacles avoided', 'Stage speed' displayed at top of screen")) / 2,
-              "2. 'Number of obstacles avoided', 'Stage speed' displayed at top of screen");
-    mvwprintw(my_win, HEIGHT / 2 + 1, (WIDTH - strlen("3. A total of 6 stages")) / 2,
-              "3. a total of 6 stages");
-    mvwprintw(my_win, HEIGHT / 2 + 3, (WIDTH - strlen("4. Increase the stage whenever 10 obstructions are avoided")) / 2,
-              "4. Up the stage whenever 10 obstructions are avoided");
-    wrefresh(my_win);
 
     // 엔터쳐서 돌아가기
 }
@@ -82,9 +95,8 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
 
-    explain();
-
     //초기 화면
+
     character.showD();
     uiBox();
 

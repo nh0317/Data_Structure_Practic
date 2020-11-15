@@ -5,7 +5,8 @@
 #define ENTER 10
 
 //높이, 너비, 시작위치(x, y)를 입력받아서 테두리 형성
-void setWindow(int height, int width, int x, int y);
+void setWindow1(int height, int width, int x, int y);
+void setWindow2(int height, int width, int x, int y);
 
 void print_start();
 void print_explain();

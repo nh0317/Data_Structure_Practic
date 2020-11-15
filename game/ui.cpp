@@ -5,20 +5,25 @@
 #include <string.h>
 #include <unistd.h>
 
-void setWindow(int height, int width, int x, int y) {
+void setWindow1(int height, int width, int x, int y) {
     WINDOW *my_win = newwin(HEIGHT, WIDTH, y, x);
     refresh();
 
     box(my_win, 0, 0);
-    explain();
-    mvwprintw(my_win, HEIGHT / 2 + 3, (WIDTH - strlen("GAME EXIT")) / 2,
-              "GAME EXIT");
-    mvwprintw(my_win, HEIGHT / 2 + 1, (WIDTH - strlen("RANKING")) / 2,
-              "RANKING");
-    mvwprintw(my_win, HEIGHT / 2 - 1, (WIDTH - strlen("GAME EXPLAIN")) / 2,
-              "GAME EXPLAIN");
-    mvwprintw(my_win, HEIGHT / 2 - 3, (WIDTH - strlen("GAME START")) / 2,
-              "GAME START");
+
+    print_exit();
+    print_rank();
+    print_explain();
+    print_start();
+
+    wrefresh(my_win);
+}
+
+void setWindow2(int height, int width, int x, int y) {
+    WINDOW *my_win = newwin(HEIGHT, WIDTH, y, x);
+    refresh();
+
+    box(my_win, 0, 0);
 
     wrefresh(my_win);
 }
