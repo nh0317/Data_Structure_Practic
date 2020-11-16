@@ -70,7 +70,7 @@ class Obstacle {
 void explain();
 
 //$회피한 장애물의 갯수를 반환
-int nemberOfObstacle(vector<Obstacle> &obstacle);
+int numberOfObstacle(vector<Obstacle> &obstacle);
 
 //$게임 시작 함수
 //충돌할 경우 0반환

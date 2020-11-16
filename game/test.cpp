@@ -7,6 +7,7 @@ using namespace std;
 #include "game.hpp"
 #include "ui.hpp"
 #include <iostream>
+#include <locale.h>
 #include <ncurses.h>
 #include <string.h>
 #include <time.h>
@@ -20,11 +21,19 @@ int main(void) {
     Character character = Character();
     vector<Obstacle> obstacle;
 
+    setlocale(LC_ALL, "ko_KR.utf8");
+    setlocale(LC_CTYPE, "ko_KR.utf8");
     int time = 1000000;
     int cnt = 0;
 
     //커서모드 시작
     initscr();
+
+    // 한글입력 테스트 확인용 입니다. 확인 후 삭제
+    printw("안녕하세요!");
+    refresh();
+    sleep(1);
+    clear();
 
     // init 기본모드 설정
     noecho();

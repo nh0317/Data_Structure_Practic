@@ -108,8 +108,8 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         showState(obstacle, time);
         usleep(time);
 
-        if (nemberOfObstacle(obstacle) % MAXOB == 1 &&
-            nemberOfObstacle(obstacle) != 1) {
+        if (numberOfObstacle(obstacle) % MAXOB == 1 &&
+            numberOfObstacle(obstacle) != 1) {
             //$ui와 관련된 부분으로 수정 가능
             mvprintw(2, 1, "Game Start After 3 seconds ");
             printw("1.. ");
@@ -154,10 +154,10 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         // 1개의 스테이지를 어떻게 구분할지에 관한 부분
         //지금은 10개 단위로 스테이지 구분.
         //지나간 장애물의 수가 10의 배수일 경우 지나간 장애물의 수를 반환
-        if (nemberOfObstacle(obstacle) % MAXOB == 0 &&
-            nemberOfObstacle(obstacle) != 0) {
+        if (numberOfObstacle(obstacle) % MAXOB == 0 &&
+            numberOfObstacle(obstacle) != 0) {
             endwin();
-            return nemberOfObstacle(obstacle);
+            return numberOfObstacle(obstacle);
         }
     }
     endwin();
@@ -325,13 +325,13 @@ void showBoard() {
     sleep(2);
 }
 void showState(vector<Obstacle> &obstacle, int time) {
-    mvprintw(1, 1, "%d %d", nemberOfObstacle(obstacle), time);
+    mvprintw(1, 1, "%d %d", numberOfObstacle(obstacle), time);
     refresh();
 }
-int nemberOfObstacle(vector<Obstacle> &obstacle) {
+int numberOfObstacle(vector<Obstacle> &obstacle) {
     int total = Obstacle::total;
-    if (obstacle.size() == HEIGHT + 1) {
-        return total - obstacle.size() + 1;
+    if (total < (HEIGHT - TOPY + 1)) {
+        return 0;
     }
-    return total - obstacle.size();
+    return total - HEIGHT + TOPY;
 }
