@@ -125,8 +125,8 @@ void fileRead() {
     }
 }
 
-// test
- int main() { // main에서 score 변수값 넣기 score값 임시로 지정
+// test용, 3명 처리
+ /* int main() { // main에서 score 변수값 넣기 score값 임시로 지정
     double score = 100;
     fileWrite(score);
     fileRead();
@@ -139,4 +139,4 @@ void fileRead() {
     fileWrite(score3);
     fileRead();
     return 0;
-}
+} */
