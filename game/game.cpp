@@ -95,9 +95,9 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     keypad(stdscr, TRUE);
 
     //초기 화면
+    uiBox();
 
     character.showD();
-    uiBox();
 
     //게임 시작
     while (true) {
@@ -180,9 +180,7 @@ void Character::moveR() {
             mvprintw(location[0] + i, location[1] + j, " ", motionR[i][j]);
             Board[location[0] + i][location[1] + j] = 0;
         }
-        printw("\n");
     }
-    printw("\n");
 
     //움직인 좌표 저장&출력
     location[1] += 1;
@@ -192,9 +190,7 @@ void Character::moveR() {
             //캐릭터가 있는 위치에는 2을 더함
             Board[location[0] + i][location[1] + j] += 2;
         }
-        printw("\n");
     }
-    printw("\n");
     refresh();
 }
 //왼쪽으로 이동
@@ -208,9 +204,7 @@ void Character::moveL() {
             mvprintw(location[0] + i, location[1] + j, " ", motionL[i][j]);
             Board[location[0] + i][location[1] + j] = 0;
         }
-        printw("\n");
     }
-    printw("\n");
 
     //움직인 좌표 저장&출력
     location[1] -= 1;
@@ -220,22 +214,17 @@ void Character::moveL() {
             //캐릭터가 있는 위치에는 2을 더함
             Board[location[0] + i][location[1] + j] += 2;
         }
-        printw("\n");
     }
-    printw("\n");
     refresh();
 }
 
 //정지 모습
 void Character::showD() {
     for (int i = 0; i < motionD.size(); i++) {
-        move(location[0] + i, location[1]);
         for (int j = 0; j < motionD[i].size(); j++) {
-            printw("%c", motionD[i][j]);
+            mvprintw(location[0] + i, location[1] + j, "%c", motionD[i][j]);
         }
-        printw("\n");
     }
-    printw("\n");
     refresh();
 }
 
