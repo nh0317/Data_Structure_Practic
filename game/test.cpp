@@ -13,6 +13,12 @@ using namespace std;
 #include <time.h>
 #include <unistd.h>
 #include <vector>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <algorithm>
+#include <fcntl.h>
+#include <list>
 
 #define ENTER 10 // enter입력값으로 사용
 #define STAGE 6  //스테이지의 개수
