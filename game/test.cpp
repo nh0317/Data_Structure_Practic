@@ -3,27 +3,27 @@
 // ui는 생각하지 않았습니다.
 // 지금은 스테이지가 이어서 시작됩니다.
 
-
 #include "game.hpp"
 #include "ui.hpp"
+#include <algorithm>
+#include <fcntl.h>
 #include <iostream>
+#include <list>
 #include <locale.h>
 #include <ncurses.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #include <vector>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <algorithm>
-#include <fcntl.h>
-#include <list>
 
 using namespace std;
-
 #define ENTER 10 // enter입력값으로 사용
 #define STAGE 6  //스테이지의 개수
+
+// numberOfObstacle() * 100
+// score 값을 이 값으로 저장해주세요
 
 int main(void) {
     Character character = Character();
@@ -36,12 +36,6 @@ int main(void) {
 
     //커서모드 시작
     initscr();
-
-    // 한글입력 테스트 확인용 입니다. 확인 후 삭제
-    // printw("안녕하세요!");
-    // refresh();
-    // sleep(1);
-    // clear();
 
     // init 기본모드 설정
     noecho();
@@ -89,24 +83,33 @@ int main(void) {
                     }
 
                     //장애물에 충돌하지 않으면 게임 실행
-                    else if (game(time, character, obstacle) % 10 == 0 &&
-                             game(time, character, obstacle) != 0) {
-                        score = game(time, character, obstacle);
+                    else if (game(time, character, obstacle) != 0) {
+                        mvprintw(1, WIDTH, "%d", score);
+                        refresh();
                         initscr();
                         clear();
-                        mvprintw(HEIGHT / 2, WIDTH / 2, "next..");
+                        mvprintw(HEIGHT / 2, WIDTH / 2, "next.. ");
                         refresh();
                         sleep(1);
                         clear();
                         endwin();
-                        time -= 5000; // 속도 증가 적당히 설정했습니다.
+                        time -= 10000; // 속도 증가 적당히 설정했습니다.
                     }
                     //장애물에 충돌하여 게임이 종료되는 경우
                     else {
+                        clear();
+                        mvprintw(HEIGHT / 2, WIDTH / 2, "FAIL");
+                        //점수 확인 확인 후 삭제
+                        int score = numberOfObstacle() * 100;
+                        mvprintw(HEIGHT / 2 + 1, WIDTH / 2, "%d", score);
+                        //
+                        refresh();
+                        sleep(5);
                         endwin();
                         return 0;
                     }
                 }
+
                 endwin();
                 return 0;
             } else if (position == 2) {
