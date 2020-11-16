@@ -21,11 +21,11 @@ using namespace std;
 class player {
   private:
     string name;
-    double score;
+    int score;
 
   public:
     string getName() { return name; }
-    double getScore() { return score; }
+    int getScore() { return score; }
     void setName(string name) { this->name = name; }
     void setScore(double score) { this->score = score; }
 };
@@ -34,21 +34,21 @@ class player {
 class Info {
   private:
     char name[MAX_NAME_LEN + 1];
-    double score;
+    int score;
 
   public:
     Info();
-    Info(string name, double score);
+    Info(string name, int score);
 
     void setName(string name);
-    void setScore(double score);
+    void setScore(int score);
 
     string getName(void);
-    double getScore(void);
+    int getScore(void);
 };
 
 //파일에 이름과 점수 기록용 함수
-void fileWrite(double score);
+void fileWrite(int score);
 //파일 읽어오는 함수
 void fileRead();
 
