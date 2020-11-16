@@ -1,5 +1,6 @@
 #include "game.hpp"
 #include "ui.hpp"
+#include "playerInfo.hpp"
 #include <array>
 #include <iostream>
 #include <list>
