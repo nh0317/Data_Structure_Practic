@@ -30,7 +30,7 @@ void Info::setScore(int score) { this->score = score; }
 
 string Info::getName(void) { return string(this->name); }
 
-double Info::getScore(void) { return this->score; }
+int Info::getScore(void) { return this->score; }
 
 void fileWrite(int score) {
     list<Info> InfoList;
@@ -127,7 +127,7 @@ void fileRead() {
 
 // test용, 3명 처리
  /* int main() { // main에서 score 변수값 넣기 score값 임시로 지정
-    double score = 100;
+    int score = 100;
     fileWrite(score);
     fileRead();
 
