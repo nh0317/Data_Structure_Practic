@@ -6,6 +6,7 @@
 using namespace std;
 #include "game.hpp"
 #include "ui.hpp"
+#include "playerInfo.hpp"
 #include <iostream>
 #include <locale.h>
 #include <ncurses.h>
