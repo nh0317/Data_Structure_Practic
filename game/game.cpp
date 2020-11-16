@@ -165,7 +165,7 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         score = numberOfObstacle(obstacle);
     }
     endwin();
-    return score;
+    return 0;
 }
 //캐릭터 클래스
 Character::Character() {

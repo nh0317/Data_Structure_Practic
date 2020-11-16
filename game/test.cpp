@@ -83,6 +83,7 @@ int main(void) {
                     //장애물에 충돌하지 않으면 게임 실행
                     else if (game(time, character, obstacle) % 10 == 0 &&
                              game(time, character, obstacle) != 0) {
+                        score = game(time, character, obstacle);
                         initscr();
                         clear();
                         mvprintw(HEIGHT / 2, WIDTH / 2, "next..");
@@ -94,7 +95,6 @@ int main(void) {
                     }
                     //장애물에 충돌하여 게임이 종료되는 경우
                     else {
-                        score = game(time, character, obstacle);
                         endwin();
                         return 0;
                     }
