@@ -3,7 +3,7 @@
 // ui는 생각하지 않았습니다.
 // 지금은 스테이지가 이어서 시작됩니다.
 
-using namespace std;
+
 #include "game.hpp"
 #include "ui.hpp"
 #include <iostream>
@@ -19,6 +19,8 @@ using namespace std;
 #include <algorithm>
 #include <fcntl.h>
 #include <list>
+
+using namespace std;
 
 #define ENTER 10 // enter입력값으로 사용
 #define STAGE 6  //스테이지의 개수
