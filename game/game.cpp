@@ -1,6 +1,6 @@
 #include "game.hpp"
-#include "ui.hpp"
 #include "playerInfo.hpp"
+#include "ui.hpp"
 #include <array>
 #include <iostream>
 #include <list>
@@ -71,13 +71,15 @@ void explain() {
              "2. 'Number of obstacles avoided', 'Stage speed' displayed at "
              "top of screen");
     mvprintw(HEIGHT / 2 + 1, (WIDTH - strlen("3. A total of 6 stages")) / 2,
-             "3. a total of 6 stages");
+             "3. A total of 6 stages");
     mvprintw(
         HEIGHT / 2 + 3,
         (WIDTH -
          strlen("4. Increase the stage whenever 10 obstructions are avoided")) /
             2,
-        "4. Up the stage whenever 10 obstructions are avoided");
+        "4. Increase the stage whenever 10 obstructions are avoided");
+    mvprintw(HEIGHT / 2 + 6, (WIDTH - strlen("[Press Enter]")) / 2,
+             "[Press Enter]");
     refresh();
 
     // 엔터쳐서 돌아가기
@@ -96,10 +98,11 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     keypad(stdscr, TRUE);
 
     //초기 화면
-    uiBox();
 
     character.showD();
+    uiBox();
 
+    int score;
     //게임 시작
     while (true) {
         generateObstacle(obstacle);
@@ -159,9 +162,10 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
             endwin();
             return numberOfObstacle(obstacle);
         }
+        score = numberOfObstacle(obstacle);
     }
     endwin();
-    return 0;
+    return score;
 }
 //캐릭터 클래스
 Character::Character() {
@@ -181,7 +185,9 @@ void Character::moveR() {
             mvprintw(location[0] + i, location[1] + j, " ", motionR[i][j]);
             Board[location[0] + i][location[1] + j] = 0;
         }
+        printw("\n");
     }
+    printw("\n");
 
     //움직인 좌표 저장&출력
     location[1] += 1;
@@ -191,7 +197,9 @@ void Character::moveR() {
             //캐릭터가 있는 위치에는 2을 더함
             Board[location[0] + i][location[1] + j] += 2;
         }
+        printw("\n");
     }
+    printw("\n");
     refresh();
 }
 //왼쪽으로 이동
@@ -205,7 +213,9 @@ void Character::moveL() {
             mvprintw(location[0] + i, location[1] + j, " ", motionL[i][j]);
             Board[location[0] + i][location[1] + j] = 0;
         }
+        printw("\n");
     }
+    printw("\n");
 
     //움직인 좌표 저장&출력
     location[1] -= 1;
@@ -215,17 +225,22 @@ void Character::moveL() {
             //캐릭터가 있는 위치에는 2을 더함
             Board[location[0] + i][location[1] + j] += 2;
         }
+        printw("\n");
     }
+    printw("\n");
     refresh();
 }
 
 //정지 모습
 void Character::showD() {
     for (int i = 0; i < motionD.size(); i++) {
+        move(location[0] + i, location[1]);
         for (int j = 0; j < motionD[i].size(); j++) {
-            mvprintw(location[0] + i, location[1] + j, "%c", motionD[i][j]);
+            printw("%c", motionD[i][j]);
         }
+        printw("\n");
     }
+    printw("\n");
     refresh();
 }
 

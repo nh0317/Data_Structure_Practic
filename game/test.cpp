@@ -6,7 +6,6 @@
 using namespace std;
 #include "game.hpp"
 #include "ui.hpp"
-#include "playerInfo.hpp"
 #include <iostream>
 #include <locale.h>
 #include <ncurses.h>
@@ -31,10 +30,10 @@ int main(void) {
     initscr();
 
     // 한글입력 테스트 확인용 입니다. 확인 후 삭제
-    printw("안녕하세요!");
-    refresh();
-    sleep(1);
-    clear();
+    // printw("안녕하세요!");
+    // refresh();
+    // sleep(1);
+    // clear();
 
     // init 기본모드 설정
     noecho();
@@ -52,6 +51,9 @@ int main(void) {
     // 커서의 위치 확인
     int position = 1;
 
+    //점수(장애물 충돌 횟수 판단)
+    int score;
+
     setWindow1(HEIGHT, WIDTH, start_x, start_y);
 
     // 키 입력시까지 반복
@@ -66,6 +68,7 @@ int main(void) {
                     if (cnt == STAGE) {
                         if (game(time, character, obstacle) != 0) {
                             //스테이지를 모두 클리어하는 경우
+                            score = 60;
                             initscr();
                             clear();
                             mvprintw(HEIGHT / 2, WIDTH / 2, "CLEAR!");
@@ -78,7 +81,8 @@ int main(void) {
                     }
 
                     //장애물에 충돌하지 않으면 게임 실행
-                    else if (game(time, character, obstacle) != 0) {
+                    else if (game(time, character, obstacle) % 10 == 0 &&
+                             game(time, character, obstacle) != 0) {
                         initscr();
                         clear();
                         mvprintw(HEIGHT / 2, WIDTH / 2, "next..");
@@ -90,7 +94,7 @@ int main(void) {
                     }
                     //장애물에 충돌하여 게임이 종료되는 경우
                     else {
-
+                        score = game(time, character, obstacle);
                         endwin();
                         return 0;
                     }
