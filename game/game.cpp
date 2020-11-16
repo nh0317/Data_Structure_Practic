@@ -20,28 +20,36 @@ int SCORE = 0;
 // 게임 화면 ui
 void uiBox() {
     //오류x
-    move(0, 0);
-    for (int i = 0; i <= WIDTH; i++) {
-        printw("-");
-    }
-    for (int i = 1; i < HEIGHT; i++) {
-        mvprintw(i, 0, "|");
-        mvprintw(i, WIDTH, "|");
-    }
-    move(3, 0);
-    for (int i = 0; i <= WIDTH; i++) {
-        printw("-");
-    }
-    move(HEIGHT, 0);
-    for (int i = 0; i <= WIDTH; i++) {
-        printw("-");
-    }
+    // move(0, 0);
+    // for (int i = 0; i <= WIDTH; i++) {
+    //     printw("-");
+    // }
+    // for (int i = 1; i < HEIGHT; i++) {
+    //     mvprintw(i, 0, "|");
+    //     mvprintw(i, WIDTH, "|");
+    // }
+    // move(3, 0);
+    // for (int i = 0; i <= WIDTH; i++) {
+    //     printw("-");
+    // }
+    // move(HEIGHT, 0);
+    // for (int i = 0; i <= WIDTH; i++) {
+    //     printw("-");
+    // }
 
     //오류o : 라이브러리 사용해서 ui출력시 캐릭터 출력 안되는 버그
     // clear() 사용시 캐릭터가 출력이 안됩니다.
+    setWindow2(HEIGHT - 2, WIDTH + 2, 0, 3);
+    setWindow2(4, WIDTH + 2, 0, 0);
+}
 
-    // setWindow2(3, WIDTH + 2, 0, 0);
-    // setWindow2(HEIGHT - 3, WIDTH + 2, 0, 3);
+void uiBox2(WINDOW *my_win) {
+    my_win = newwin(HEIGHT - 3, WIDTH + 2, 0, 3);
+    refresh();
+
+    box(my_win, 0, 0);
+
+    wrefresh(my_win);
 }
 
 // game 설명창
@@ -123,7 +131,7 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
             printw("3.. ");
             refresh();
             sleep(1);
-            clear();
+            mvprintw(2, 1, "                                        ");
         }
         input = getch();
         // q로 종료
@@ -140,7 +148,7 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         } else {
             character.showD();
         }
-        uiBox();
+        // uiBox();
         //$충돌했을 경우
         //목숨이 차감되는 함수 추가&fail판단 추가
         //지금은 한 번이라도 충돌시 FAIL 출력하고 종료

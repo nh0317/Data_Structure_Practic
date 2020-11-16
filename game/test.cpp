@@ -84,14 +84,11 @@ int main(void) {
 
                     //장애물에 충돌하지 않으면 게임 실행
                     else if (game(time, character, obstacle) != 0) {
-                        mvprintw(1, WIDTH, "%d", score);
-                        refresh();
                         initscr();
                         clear();
                         mvprintw(HEIGHT / 2, WIDTH / 2, "next.. ");
                         refresh();
                         sleep(1);
-                        clear();
                         endwin();
                         time -= 10000; // 속도 증가 적당히 설정했습니다.
                     }

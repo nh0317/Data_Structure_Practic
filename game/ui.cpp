@@ -20,7 +20,8 @@ void setWindow1(int height, int width, int x, int y) {
 }
 
 void setWindow2(int height, int width, int x, int y) {
-    WINDOW *my_win = newwin(HEIGHT, WIDTH, y, x);
+    // WINDOW *my_win = newwin(HEIGHT, WIDTH, y, x);
+    WINDOW *my_win = newwin(height, width, y, x);
     refresh();
 
     box(my_win, 0, 0);
