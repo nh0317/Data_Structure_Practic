@@ -27,7 +27,7 @@ class player {
     string getName() { return name; }
     int getScore() { return score; }
     void setName(string name) { this->name = name; }
-    void setScore(double score) { this->score = score; }
+    void setScore(int score) { this->score = score; }
 };
 
 // infomation class
