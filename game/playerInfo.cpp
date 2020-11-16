@@ -17,7 +17,7 @@ Info::Info() {
     memset(this->name, 0x00, MAX_NAME_LEN + 1);
 }
 
-Info::Info(string name, double score) {
+Info::Info(string name, int score) {
     memcpy(this->name, name.c_str(), MAX_NAME_LEN);
     this->score = score;
 }
@@ -26,13 +26,13 @@ void Info::setName(string name) {
     memcpy(this->name, name.c_str(), MAX_NAME_LEN);
 }
 
-void Info::setScore(double score) { this->score = score; }
+void Info::setScore(int score) { this->score = score; }
 
 string Info::getName(void) { return string(this->name); }
 
 double Info::getScore(void) { return this->score; }
 
-void fileWrite(double score) {
+void fileWrite(int score) {
     list<Info> InfoList;
     char *tmp;
 
@@ -131,11 +131,11 @@ void fileRead() {
     fileWrite(score);
     fileRead();
 
-    double score2 = 200;
+    int score2 = 200;
     fileWrite(score2);
     fileRead();
 
-    double score3 = 300;
+    int score3 = 300;
     fileWrite(score3);
     fileRead();
     return 0;
