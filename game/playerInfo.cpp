@@ -40,7 +40,7 @@ void fileWrite(double score) {
     cout << "Enter the NAME : ";
     cin >> name;
 
-    cout << "<< Score: " << score << endl;
+    cout << "Score: " << score << endl;
 
     Info info(name, score);
     InfoList.push_back(info);
@@ -125,9 +125,8 @@ void fileRead() {
     }
 }
 
-// test용 main 코드
- /* int main() { 
- // main에서 score 변수값 넣기 score값 임시로 지정
+// test
+ int main() { // main에서 score 변수값 넣기 score값 임시로 지정
     double score = 100;
     fileWrite(score);
     fileRead();
@@ -136,5 +135,8 @@ void fileRead() {
     fileWrite(score2);
     fileRead();
 
+    double score3 = 300;
+    fileWrite(score3);
+    fileRead();
     return 0;
-} */
+}
