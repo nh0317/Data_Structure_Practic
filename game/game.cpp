@@ -15,32 +15,33 @@ using namespace std;
 
 array<array<int, WIDTH>, HEIGHT> Board = {0};
 int Obstacle::total = 0;
+int SCORE = 0;
 
 // 게임 화면 ui
 void uiBox() {
     //오류x
-    // move(0, 0);
-    // for (int i = 0; i <= WIDTH; i++) {
-    //     printw("-");
-    // }
-    // for (int i = 1; i < HEIGHT; i++) {
-    //     mvprintw(i, 0, "|");
-    //     mvprintw(i, WIDTH, "|");
-    // }
-    // move(3, 0);
-    // for (int i = 0; i <= WIDTH; i++) {
-    //     printw("-");
-    // }
-    // move(HEIGHT, 0);
-    // for (int i = 0; i <= WIDTH; i++) {
-    //     printw("-");
-    // }
+    move(0, 0);
+    for (int i = 0; i <= WIDTH; i++) {
+        printw("-");
+    }
+    for (int i = 1; i < HEIGHT; i++) {
+        mvprintw(i, 0, "|");
+        mvprintw(i, WIDTH, "|");
+    }
+    move(3, 0);
+    for (int i = 0; i <= WIDTH; i++) {
+        printw("-");
+    }
+    move(HEIGHT, 0);
+    for (int i = 0; i <= WIDTH; i++) {
+        printw("-");
+    }
 
     //오류o : 라이브러리 사용해서 ui출력시 캐릭터 출력 안되는 버그
     // clear() 사용시 캐릭터가 출력이 안됩니다.
 
-    setWindow2(3, WIDTH + 2, 0, 0);
-    setWindow2(HEIGHT, WIDTH + 2, 0, 3);
+    // setWindow2(3, WIDTH + 2, 0, 0);
+    // setWindow2(HEIGHT - 3, WIDTH + 2, 0, 3);
 }
 
 // game 설명창
@@ -98,21 +99,19 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     keypad(stdscr, TRUE);
 
     //초기 화면
-
-    character.showD();
     uiBox();
+    character.showD();
 
-    int score;
     //게임 시작
     while (true) {
         generateObstacle(obstacle);
         //$게임에 대한 정보가 출력됨
         //지금은 회피한 장애물의 수, time 출력
-        showState(obstacle, time);
+        SCORE = numberOfObstacle() * 100;
+        showState(SCORE, time);
         usleep(time);
 
-        if (numberOfObstacle(obstacle) % MAXOB == 1 &&
-            numberOfObstacle(obstacle) != 1) {
+        if (numberOfObstacle() % MAXOB == 1 && numberOfObstacle() != 1) {
             //$ui와 관련된 부분으로 수정 가능
             mvprintw(2, 1, "Game Start After 3 seconds ");
             printw("1.. ");
@@ -141,15 +140,11 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         } else {
             character.showD();
         }
-        // uiBox(); 윈도우(라이브러리) 사용 안 할 경우 주석 해제
+        uiBox();
         //$충돌했을 경우
         //목숨이 차감되는 함수 추가&fail판단 추가
         //지금은 한 번이라도 충돌시 FAIL 출력하고 종료
         if (crash(character.getY(), character.getX())) {
-            clear();
-            mvprintw(HEIGHT / 2, WIDTH / 2, "FAIL");
-            refresh();
-            sleep(5);
             break;
         }
 
@@ -157,12 +152,10 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         // 1개의 스테이지를 어떻게 구분할지에 관한 부분
         //지금은 10개 단위로 스테이지 구분.
         //지나간 장애물의 수가 10의 배수일 경우 지나간 장애물의 수를 반환
-        if (numberOfObstacle(obstacle) % MAXOB == 0 &&
-            numberOfObstacle(obstacle) != 0) {
+        if (numberOfObstacle() % MAXOB == 0 && numberOfObstacle() != 0) {
             endwin();
-            return numberOfObstacle(obstacle);
+            return numberOfObstacle();
         }
-        score = numberOfObstacle(obstacle);
     }
     endwin();
     return 0;
@@ -185,9 +178,7 @@ void Character::moveR() {
             mvprintw(location[0] + i, location[1] + j, " ", motionR[i][j]);
             Board[location[0] + i][location[1] + j] = 0;
         }
-        printw("\n");
     }
-    printw("\n");
 
     //움직인 좌표 저장&출력
     location[1] += 1;
@@ -197,9 +188,7 @@ void Character::moveR() {
             //캐릭터가 있는 위치에는 2을 더함
             Board[location[0] + i][location[1] + j] += 2;
         }
-        printw("\n");
     }
-    printw("\n");
     refresh();
 }
 //왼쪽으로 이동
@@ -213,9 +202,7 @@ void Character::moveL() {
             mvprintw(location[0] + i, location[1] + j, " ", motionL[i][j]);
             Board[location[0] + i][location[1] + j] = 0;
         }
-        printw("\n");
     }
-    printw("\n");
 
     //움직인 좌표 저장&출력
     location[1] -= 1;
@@ -225,22 +212,17 @@ void Character::moveL() {
             //캐릭터가 있는 위치에는 2을 더함
             Board[location[0] + i][location[1] + j] += 2;
         }
-        printw("\n");
     }
-    printw("\n");
     refresh();
 }
 
 //정지 모습
 void Character::showD() {
     for (int i = 0; i < motionD.size(); i++) {
-        move(location[0] + i, location[1]);
         for (int j = 0; j < motionD[i].size(); j++) {
-            printw("%c", motionD[i][j]);
+            mvprintw(location[0] + i, location[1] + j, "%c", motionD[i][j]);
         }
-        printw("\n");
     }
-    printw("\n");
     refresh();
 }
 
@@ -248,6 +230,8 @@ Obstacle::Obstacle() {
     total += 1;
     srand(time(NULL));
     length = rand() % MAX_LENGTH + 1;
+
+    //출력 수정할 것
     location[1] = rand() % (WIDTH - length) + TOPX; // TOPX~width-1-length
 
     for (int i = 0; i < length; i++) {
@@ -323,18 +307,18 @@ void showBoard() {
         for (int j = 0; j < WIDTH; j++) {
             printw("%d", Board[i][j]);
         }
-        printw("\n");
     }
     refresh();
     sleep(2);
 }
-void showState(vector<Obstacle> &obstacle, int time) {
-    mvprintw(1, 1, "%d %d", numberOfObstacle(obstacle), time);
+void showState(int score, int time) {
+    int stage = (1000000 - time) / 10000 + 1;
+    mvprintw(1, 1, "score: %d stage %d", score, stage);
     refresh();
 }
-int numberOfObstacle(vector<Obstacle> &obstacle) {
+int numberOfObstacle() {
     int total = Obstacle::total;
-    if (total < (HEIGHT - TOPY + 1)) {
+    if (total < HEIGHT - TOPY + 1) {
         return 0;
     }
     return total - HEIGHT + TOPY;
