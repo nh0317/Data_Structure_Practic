@@ -39,11 +39,7 @@ void uiBox2(WINDOW *my_win) {
 
 // game 설명창
 void explain() {
-    //커서모드 시작
-    initscr();
-    // init 기본모드 설정
-    noecho();
-    cbreak();
+    curs_set(0);
 
     //특수키 사용 (방향키 등)
     keypad(stdscr, TRUE);
@@ -53,7 +49,7 @@ void explain() {
     // 커서의 위치 확인
     int position = 1;
 
-    setWindow2(HEIGHT, WIDTH, 0, 0);
+    setWindow2(UIHEIGHT, UIWIDTH, 0, 0);
 
     mvprintw(HEIGHT / 2 - 3,
              (WIDTH - strlen("1. Operate with a directional key")) / 2,
