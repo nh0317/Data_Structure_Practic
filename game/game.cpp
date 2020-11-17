@@ -77,7 +77,7 @@ void explain() {
 //$게임 시작 함수
 int game(int time, Character &character, vector<Obstacle> &obstacle) {
     int input;
-
+    Board = {0};
     //화면 시작
     initscr();
     cbreak();

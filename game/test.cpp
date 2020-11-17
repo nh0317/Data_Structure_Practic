@@ -27,8 +27,6 @@ using namespace std;
 // score 값을 이 값으로 저장해주세요
 
 int main(void) {
-    Character character = Character();
-    vector<Obstacle> obstacle;
 
     setlocale(LC_ALL, "ko_KR.utf8");
     setlocale(LC_CTYPE, "ko_KR.utf8");
@@ -66,6 +64,11 @@ int main(void) {
             if (position == 1) {
                 // GAME START 출력
                 clear();
+                Character character = Character();
+                vector<Obstacle> obstacle;
+                int time = 1000000;
+                int cnt = 0;
+                Obstacle::total = 0;
                 for (int i = 0; i < STAGE; i++) {
                     cnt++;
                     if (cnt == STAGE) {
