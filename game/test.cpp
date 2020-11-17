@@ -85,8 +85,6 @@ int main(void) {
                     else if (game(time, character, obstacle) != 0) {
                         initscr();
                         setWindow3("next..");
-                        // mvprintw((HEIGHT + 1) / 2, (WIDTH + 2) / 2, "next..
-                        // ");
                         refresh();
                         sleep(1);
                         endwin();
