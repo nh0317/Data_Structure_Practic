@@ -1,8 +1,10 @@
 #include "playerInfo.hpp"
+#include "ui.hpp"
 #include <algorithm>
 #include <fcntl.h>
 #include <iostream>
 #include <list>
+#include <ncurses.h>
 #include <string.h>
 #include <string>
 #include <sys/stat.h>
@@ -36,17 +38,24 @@ void fileWrite(int score) {
     list<Info> InfoList;
     char *tmp;
 
-    string name = "";
+    char name[10];
+    move(UIHEIGHT / 2 + 2, (UIWIDTH - 16) / 2);
+    refresh();
     cout << "Enter the NAME : ";
     cin >> name;
 
-    cout << "Score: " << score << endl;
+    mvprintw(UIHEIGHT / 2 + 3, (UIWIDTH - 8 - intlen(score)) / 2, "Score: %d",
+             score);
+    // cout << "Score: " << score << endl;
 
     Info info(name, score);
     InfoList.push_back(info);
     int num = InfoList.size();
 
-    cout << "플레이어 정보가 성공적으로 저장되었습니다!" << endl;
+    mvprintw(UIHEIGHT / 2 + 4, (UIWIDTH - 30) / 2,
+             "플레이어 정보가 성공적으로 저장되었습니다!");
+    refresh();
+    // cout << "플레이어 정보가 성공적으로 저장되었습니다!" << endl;
 
     string filepath = "./PlayerInfo.txt";
     int fd = open(filepath.c_str(), O_CREAT | O_APPEND | O_WRONLY, 0644);
@@ -89,7 +98,7 @@ void fileRead() {
     // Info *info = new Info();
 
     string filepath = "./PlayerInfo.txt";
-    file = open(filepath.c_str(), O_RDONLY, 0644);
+    file = open(filepath.c_str(), O_RDONLY | O_CREAT, 0644);
 
     /*if (in.is_open()) {
         in >> s;
@@ -126,10 +135,12 @@ void fileRead() {
     //랭킹 출력
 
     for (int i = 0; i < k; i++) {
-
-        cout << rank_n << "등 "
+        // mvprintw사용시 이름 깨짐 현상!!!
+        mvprintw(1 + i, 1, "%d등 NAME : %s SCORE : %d", rank_n,
+                 player[i].getName(), player[i].getScore());
+        /*cout << rank_n << "등 "
              << "NAME : " << player[i].getName()
-             << " SCORE : " << player[i].getScore() << endl;
+             << " SCORE : " << player[i].getScore() << endl;*/
         if (i < (k - 1)) {
             if (player[i].getScore() == player[i + 1].getScore()) {
                 // cout << "cnt : " << cnt << endl;

@@ -76,7 +76,7 @@ int main(void) {
                             //스테이지를 모두 클리어하는 경우
                             score = 60;
                             initscr();
-                            setWindow3("CLEAR!");
+                            setWindow3("CLEAR!", 4, 14, 34);
                             refresh();
                             sleep(3);
                             endwin();
@@ -88,7 +88,7 @@ int main(void) {
                     //장애물에 충돌하지 않으면 게임 실행
                     else if (game(time, character, obstacle) != 0) {
                         initscr();
-                        setWindow3("next..");
+                        setWindow3("next..", 4, 14, 34);
                         refresh();
                         sleep(1);
                         endwin();
@@ -96,13 +96,16 @@ int main(void) {
                     }
                     //장애물에 충돌하여 게임이 종료되는 경우
                     else {
-                        setWindow3("fail..");
+                        setWindow3("fail..", 7, 30, 26);
                         //점수 확인 확인 후 삭제
                         int score = numberOfObstacle() * 100;
                         mvprintw(UIHEIGHT / 2 + 1,
                                  (UIWIDTH - intlen(score)) / 2, "%d", score);
                         refresh();
+                        //점수 입력
                         fileWrite(score);
+                        // sleep 도중 엔터키 입력시 바로 재시작 문제
+                        sleep(1);
                         clear();
                         setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
                         refresh();
@@ -118,6 +121,7 @@ int main(void) {
                 while (getch() != ENTER) {
                     sleep(0);
                 }
+                curs_set(2);
                 setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
                 print_explain();
                 refresh();

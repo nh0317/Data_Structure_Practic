@@ -29,10 +29,10 @@ void setWindow2(int height, int width, int x, int y) {
     wrefresh(my_win);
 }
 
-void setWindow3(const char *text) {
+void setWindow3(const char *text, int height, int width, int start_x) {
     clear();
     setWindow2(UIHEIGHT, UIWIDTH, 0, 0);
-    setWindow2(4, 14, WIDTH / 2 - strlen(text), HEIGHT / 2 - 1);
+    setWindow2(height, width, start_x, HEIGHT / 2 - 1);
     mvprintw(UIHEIGHT / 2, (UIWIDTH - strlen(text)) / 2, "%s", text);
 }
 
