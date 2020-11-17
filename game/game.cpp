@@ -19,26 +19,6 @@ int SCORE = 0;
 
 // 게임 화면 ui
 void uiBox() {
-    //오류x
-    // move(0, 0);
-    // for (int i = 0; i <= WIDTH; i++) {
-    //     printw("-");
-    // }
-    // for (int i = 1; i < HEIGHT; i++) {
-    //     mvprintw(i, 0, "|");
-    //     mvprintw(i, WIDTH, "|");
-    // }
-    // move(3, 0);
-    // for (int i = 0; i <= WIDTH; i++) {
-    //     printw("-");
-    // }
-    // move(HEIGHT, 0);
-    // for (int i = 0; i <= WIDTH; i++) {
-    //     printw("-");
-    // }
-
-    //오류o : 라이브러리 사용해서 ui출력시 캐릭터 출력 안되는 버그
-    // clear() 사용시 캐릭터가 출력이 안됩니다.
     setWindow2(HEIGHT - 2, WIDTH + 2, 0, 3);
     setWindow2(4, WIDTH + 2, 0, 0);
 }

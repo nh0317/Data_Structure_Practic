@@ -56,7 +56,7 @@ int main(void) {
     //점수(장애물 충돌 횟수 판단)
     int score;
 
-    setWindow1(HEIGHT, WIDTH, start_x, start_y);
+    setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
 
     // 키 입력시까지 반복
     while ((ch = getch()) != KEY_F(8)) {
@@ -72,8 +72,7 @@ int main(void) {
                             //스테이지를 모두 클리어하는 경우
                             score = 60;
                             initscr();
-                            clear();
-                            mvprintw(HEIGHT / 2, WIDTH / 2, "CLEAR!");
+                            setWindow3("CLEAR!");
                             refresh();
                             sleep(3);
                             endwin();
@@ -85,8 +84,9 @@ int main(void) {
                     //장애물에 충돌하지 않으면 게임 실행
                     else if (game(time, character, obstacle) != 0) {
                         initscr();
-                        clear();
-                        mvprintw(HEIGHT / 2, WIDTH / 2, "next.. ");
+                        setWindow3("next..");
+                        // mvprintw((HEIGHT + 1) / 2, (WIDTH + 2) / 2, "next..
+                        // ");
                         refresh();
                         sleep(1);
                         endwin();
@@ -94,28 +94,29 @@ int main(void) {
                     }
                     //장애물에 충돌하여 게임이 종료되는 경우
                     else {
-                        clear();
-                        mvprintw(HEIGHT / 2, WIDTH / 2, "FAIL");
+                        setWindow3("fail..");
                         //점수 확인 확인 후 삭제
                         int score = numberOfObstacle() * 100;
-                        mvprintw(HEIGHT / 2 + 1, WIDTH / 2, "%d", score);
-                        //
+                        mvprintw(UIHEIGHT / 2 + 1,
+                                 (UIWIDTH - intlen(score)) / 2, "%d", score);
                         refresh();
-                        sleep(5);
-                        endwin();
-                        return 0;
+                        sleep(3);
+                        clear();
+                        setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
+                        refresh();
+                        break;
                     }
                 }
-
-                endwin();
-                return 0;
+                break;
+                // endwin();
+                // return 0;
             } else if (position == 2) {
                 explain();
                 // GAME EXPLAIN 출력
                 while (getch() != ENTER) {
                     sleep(0);
                 }
-                setWindow1(HEIGHT, WIDTH, start_x, start_y);
+                setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
                 print_explain();
                 refresh();
                 break;
