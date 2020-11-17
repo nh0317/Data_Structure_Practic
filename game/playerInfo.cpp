@@ -146,19 +146,19 @@ void fileRead() {
 }
 
 // test용, 3명 처리
-int main() { // main에서 score 변수값 넣기 score값 임시로 지정
-    /*int score = 100;
+/* int main() { // main에서 score 변수값 넣기 score값 임시로 지정
+    int score = 100;
     fileWrite(score);
     int score2 = 100;
     fileWrite(score2);
     int score3 = 200;
     fileWrite(score3);
     int score4 = 400;
-    fileWrite(score4); */
+    fileWrite(score4); 
 
     cout << endl;
     cout << "랭킹 출력" << endl;
     fileRead();
 
     return 0;
-}
+} */
