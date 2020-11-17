@@ -4,6 +4,7 @@
 // 지금은 스테이지가 이어서 시작됩니다.
 
 #include "game.hpp"
+#include "playerInfo.hpp"
 #include "ui.hpp"
 #include <algorithm>
 #include <fcntl.h>
@@ -98,7 +99,7 @@ int main(void) {
                         mvprintw(UIHEIGHT / 2 + 1,
                                  (UIWIDTH - intlen(score)) / 2, "%d", score);
                         refresh();
-                        sleep(3);
+                        fileWrite(score);
                         clear();
                         setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
                         refresh();
@@ -120,6 +121,15 @@ int main(void) {
                 break;
             } else if (position == 3) {
                 // RANKING 출력
+                clear();
+                setWindow2(UIHEIGHT, UIWIDTH, start_x, start_y);
+                fileRead();
+                while (getch() != ENTER) {
+                    sleep(0);
+                }
+                clear();
+                setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
+                print_rank();
                 break;
             } else if (position == 4) {
                 //프로그램 종료
