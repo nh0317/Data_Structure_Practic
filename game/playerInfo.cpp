@@ -11,6 +11,8 @@
 #include <vector>
 
 using namespace std;
+int rank_n = 1;
+int cnt = 1;
 
 Info::Info() {
     this->score = -1.0;
@@ -115,28 +117,48 @@ void fileRead() {
             if (player[j].getScore() < player[j + 1].getScore()) {
                 SWAP(player[j], player[j + 1], tmp);
             }
+            /*else if (player[j].getScore() == player[j+1].getScore())
+            {
+
+            }*/
         }
     }
     //랭킹 출력
+
     for (int i = 0; i < k; i++) {
-        cout << i + 1 << "등 "
-             << "NAME : " << player[i].getName()
-             << " SCORE : " << player[i].getScore() << endl;
+
+        if (player[i].getScore() == player[i + 1].getScore()) {
+            cout << rank_n << "등 "
+                 << "NAME : " << player[i].getName()
+                 << " SCORE : " << player[i].getScore() << endl;
+            //rank_n = ++cnt; //동점자 등수밀리게
+            cnt++;
+        }
+
+        else {
+
+            cout << rank_n << "등 "
+                 << "NAME : " << player[i].getName()
+                 << " SCORE : " << player[i].getScore() << endl;
+            rank_n++;
+        }
     }
 }
 
 // test용, 3명 처리
 /* int main() { // main에서 score 변수값 넣기 score값 임시로 지정
-   double score = 100;
-   fileWrite(score);
-   fileRead();
+    int score = 100;
+    fileWrite(score);
+    int score2 = 100;
+    fileWrite(score2);
+    int score3 = 200;
+    fileWrite(score3);
+    int score4 = 400;
+    fileWrite(score4); 
 
-   double score2 = 200;
-   fileWrite(score2);
-   fileRead();
+    cout << endl;
+    cout << "랭킹 출력" << endl;
+    fileRead();
 
-   double score3 = 300;
-   fileWrite(score3);
-   fileRead();
-   return 0;
+    return 0;
 } */
