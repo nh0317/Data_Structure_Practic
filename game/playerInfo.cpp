@@ -11,8 +11,6 @@
 #include <vector>
 
 using namespace std;
-int rank_n = 1;
-int cnt = 1;
 
 Info::Info() {
     this->score = -1.0;
@@ -85,6 +83,8 @@ void fileRead() {
     int k = 0;
     player player[1024], tmp;
     Info info[1024];
+    int rank_n = 1; //등수 변수
+    int same = 1;   //동점자 처리 변수
 
     // Info *info = new Info();
 
@@ -127,25 +127,22 @@ void fileRead() {
 
     for (int i = 0; i < k; i++) {
 
-        if (player[i].getScore() == player[i + 1].getScore()) {
-            cout << rank_n << "등 "
-                 << "NAME : " << player[i].getName()
-                 << " SCORE : " << player[i].getScore() << endl;
-            //rank_n = ++cnt; //동점자 등수밀리게
-            cnt++;
-        }
-
-        else {
-
-            cout << rank_n << "등 "
-                 << "NAME : " << player[i].getName()
-                 << " SCORE : " << player[i].getScore() << endl;
-            rank_n++;
+        cout << rank_n << "등 "
+             << "NAME : " << player[i].getName()
+             << " SCORE : " << player[i].getScore() << endl;
+        if (i < (k - 1)) {
+            if (player[i].getScore() == player[i + 1].getScore()) {
+                // cout << "cnt : " << cnt << endl;
+                ++same;
+            } else {
+                rank_n += same;
+                same = 1;
+            }
         }
     }
 }
 
-// test용, 3명 처리
+// test용, 4명 및 동점자 처리
 /* int main() { // main에서 score 변수값 넣기 score값 임시로 지정
     int score = 100;
     fileWrite(score);
@@ -154,11 +151,12 @@ void fileRead() {
     int score3 = 200;
     fileWrite(score3);
     int score4 = 400;
-    fileWrite(score4); 
+    fileWrite(score4);
 
     cout << endl;
     cout << "랭킹 출력" << endl;
     fileRead();
 
     return 0;
+
 } */
