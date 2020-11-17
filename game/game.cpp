@@ -15,12 +15,17 @@ using namespace std;
 
 array<array<int, WIDTH>, HEIGHT> Board = {0};
 int Obstacle::total = 0;
-int SCORE = 0;
 
 // 게임 화면 ui
 void uiBox() {
     setWindow2(HEIGHT - 2, WIDTH + 2, 0, 3);
     setWindow2(4, WIDTH + 2, 0, 0);
+}
+
+void showObstacle(vector<Obstacle> &obstacle) {
+    for (int i = 1; i < obstacle.size(); i++) {
+        obstacle[i].show();
+    }
 }
 
 void uiBox2(WINDOW *my_win) {
@@ -76,7 +81,9 @@ void explain() {
 
 //$게임 시작 함수
 int game(int time, Character &character, vector<Obstacle> &obstacle) {
+    int score = 0;
     int input;
+    score = numberOfObstacle() * 100;
     Board = {0};
     //화면 시작
     initscr();
@@ -88,31 +95,34 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
 
     //초기 화면
     uiBox();
+    showState(score, time);
     character.showD();
+
+    if (numberOfObstacle() != 0) {
+        //$ui와 관련된 부분으로 수정 가능
+        showObstacle(obstacle);
+        mvprintw(2, 1, "Game Start After 3 seconds ");
+        printw("1.. ");
+        refresh();
+        sleep(1);
+        printw("2.. ");
+        refresh();
+        sleep(1);
+        printw("3.. ");
+        refresh();
+        sleep(1);
+        mvprintw(2, 1, "                                        ");
+    }
 
     //게임 시작
     while (true) {
         generateObstacle(obstacle);
         //$게임에 대한 정보가 출력됨
         //지금은 회피한 장애물의 수, time 출력
-        SCORE = numberOfObstacle() * 100;
-        showState(SCORE, time);
+        score = numberOfObstacle() * 100;
+        showState(score, time);
         usleep(time);
 
-        if (numberOfObstacle() % MAXOB == 1 && numberOfObstacle() != 1) {
-            //$ui와 관련된 부분으로 수정 가능
-            mvprintw(2, 1, "Game Start After 3 seconds ");
-            printw("1.. ");
-            refresh();
-            sleep(1);
-            printw("2.. ");
-            refresh();
-            sleep(1);
-            printw("3.. ");
-            refresh();
-            sleep(1);
-            mvprintw(2, 1, "                                        ");
-        }
         input = getch();
         // q로 종료
         if (input == 'q') {
@@ -267,11 +277,12 @@ void Obstacle::moveO() {
 
 //장애물 생성
 void generateObstacle(vector<Obstacle> &obstacle) {
-    if (obstacle.size() > HEIGHT) {
+    if (obstacle.size() > HEIGHT - TOPY) {
         obstacle.erase(obstacle.begin());
     }
     for (int i = 0; i < obstacle.size(); i++) {
         obstacle[i].moveO();
+        mvprintw(WIDTH + 3, i, "%d", i);
     }
     obstacle.push_back(Obstacle());
     obstacle[obstacle.size() - 1].show();
