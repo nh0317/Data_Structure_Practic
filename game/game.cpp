@@ -51,24 +51,25 @@ void explain() {
 
     setWindow2(UIHEIGHT, UIWIDTH, 0, 0);
 
-    mvprintw(HEIGHT / 2 - 3,
-             (WIDTH - strlen("1. Operate with a directional key")) / 2,
+    mvprintw(UIHEIGHT / 2 - 3,
+             (UIWIDTH - strlen("1. Operate with a directional key")) / 2,
              "1. Operat with a directional key");
-    mvprintw(HEIGHT / 2 - 1,
-             (WIDTH - strlen("2. 'Number of obstacles avoided', 'Stage speed' "
-                             "displayed at top of screen")) /
-                 2,
-             "2. 'Number of obstacles avoided', 'Stage speed' displayed at "
-             "top of screen");
-    mvprintw(HEIGHT / 2 + 1, (WIDTH - strlen("3. A total of 6 stages")) / 2,
+    mvprintw(
+        UIHEIGHT / 2 - 1,
+        (UIWIDTH - strlen("2. 'Number of obstacles avoided', 'Stage speed' "
+                          "displayed at top of screen")) /
+            2,
+        "2. 'Number of obstacles avoided', 'Stage speed' displayed at "
+        "top of screen");
+    mvprintw(UIHEIGHT / 2 + 1, (UIWIDTH - strlen("3. A total of 6 stages")) / 2,
              "3. A total of 6 stages");
     mvprintw(
-        HEIGHT / 2 + 3,
-        (WIDTH -
+        UIHEIGHT / 2 + 3,
+        (UIWIDTH -
          strlen("4. Increase the stage whenever 10 obstructions are avoided")) /
             2,
         "4. Increase the stage whenever 10 obstructions are avoided");
-    mvprintw(HEIGHT / 2 + 6, (WIDTH - strlen("[Press Enter]")) / 2,
+    mvprintw(UIHEIGHT - 1, (UIWIDTH - strlen("[Press Enter]")) / 2,
              "[Press Enter]");
     refresh();
 

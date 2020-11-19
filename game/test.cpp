@@ -104,8 +104,6 @@ int main(void) {
                         refresh();
                         //점수 입력
                         fileWrite(score);
-                        // sleep 도중 엔터키 입력시 바로 재시작 문제
-                        sleep(1);
                         clear();
                         setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
                         refresh();
@@ -134,9 +132,10 @@ int main(void) {
                 while (getch() != ENTER) {
                     sleep(0);
                 }
-                clear();
+                curs_set(2);
                 setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
                 print_rank();
+                refresh();
                 break;
             } else if (position == 4) {
                 //프로그램 종료

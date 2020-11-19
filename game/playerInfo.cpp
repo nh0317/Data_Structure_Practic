@@ -38,23 +38,27 @@ void fileWrite(int score) {
     list<Info> InfoList;
     char *tmp;
 
-    char name[10];
-    move(UIHEIGHT / 2 + 2, (UIWIDTH - 16) / 2);
+    char name[25];
+    nodelay(stdscr, FALSE);
+    echo();
+    mvprintw(UIHEIGHT / 2 + 2, (UIWIDTH - 16) / 2, "Enter the NAME : ");
     refresh();
-    cout << "Enter the NAME : ";
-    cin >> name;
+    fflush(stdin);
+    scanw("%s", name);
+    nodelay(stdscr, TRUE);
+    noecho();
 
-    mvprintw(UIHEIGHT / 2 + 3, (UIWIDTH - 8 - intlen(score)) / 2, "Score: %d",
-             score);
+    /*mvprintw(UIHEIGHT / 2 + 3, (UIWIDTH - 8 - intlen(score)) / 2, "Score: %d",
+             score);*/
     // cout << "Score: " << score << endl;
 
     Info info(name, score);
     InfoList.push_back(info);
     int num = InfoList.size();
 
-    mvprintw(UIHEIGHT / 2 + 4, (UIWIDTH - 30) / 2,
+    /*mvprintw(UIHEIGHT / 2 + 4, (UIWIDTH - 30) / 2,
              "플레이어 정보가 성공적으로 저장되었습니다!");
-    refresh();
+    refresh();*/
     // cout << "플레이어 정보가 성공적으로 저장되었습니다!" << endl;
 
     string filepath = "./PlayerInfo.txt";
@@ -87,6 +91,7 @@ void fileWrite(int score) {
     }
 }
 void fileRead() {
+    curs_set(0);
     ssize_t rsize = 0;
     int file = 0;
     int k = 0;
@@ -138,6 +143,7 @@ void fileRead() {
         // mvprintw사용시 이름 깨짐 현상!!!
         mvprintw(1 + i, 1, "%d등 NAME : %s SCORE : %d", rank_n,
                  player[i].getName(), player[i].getScore());
+        // cout << player[i].getName();
         /*cout << rank_n << "등 "
              << "NAME : " << player[i].getName()
              << " SCORE : " << player[i].getScore() << endl;*/
@@ -151,6 +157,8 @@ void fileRead() {
             }
         }
     }
+    mvprintw(UIHEIGHT - 1, (UIWIDTH - strlen("[Press Enter]")) / 2,
+             "[Press Enter]");
 }
 
 // test용, 4명 및 동점자 처리
