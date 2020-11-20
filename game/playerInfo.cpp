@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <iostream>
 #include <list>
+#include <locale.h>
 #include <ncurses.h>
 #include <string.h>
 #include <string>
@@ -35,6 +36,8 @@ string Info::getName(void) { return string(this->name); }
 int Info::getScore(void) { return this->score; }
 
 void fileWrite(int score) {
+    setlocale(LC_ALL, "ko_KR.utf8");
+    setlocale(LC_CTYPE, "ko_KR.utf8");
     list<Info> InfoList;
     char *tmp;
 
@@ -82,6 +85,8 @@ void fileWrite(int score) {
     }
 }
 void fileRead() {
+    setlocale(LC_ALL, "ko_KR.utf8");
+    setlocale(LC_CTYPE, "ko_KR.utf8");
     curs_set(0);
     ssize_t rsize = 0;
     int file = 0;
@@ -138,7 +143,7 @@ void fileRead() {
     for (int i = 0; i < 23; i++) {
         // mvprintw사용시 이름 깨짐 현상!!!
         mvprintw(1 + i, 1, "%d등 NAME : %s SCORE : %d", rank_n,
-                 player[i].getName(), player[i].getScore());
+                 player[i].getName().c_str(), player[i].getScore());
         /*cout << rank_n << "등 "
              << "NAME : " << player[i].getName()
              << " SCORE : " << player[i].getScore() << endl;*/
