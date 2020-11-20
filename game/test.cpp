@@ -25,6 +25,8 @@ using namespace std;
 
 // numberOfObstacle() * 100
 // score 값을 이 값으로 저장해주세요
+//점수(장애물 피한 횟수 * 100)
+int score;
 
 int main(void) {
 
@@ -51,9 +53,6 @@ int main(void) {
 
     // 커서의 위치 확인
     int position = 1;
-
-    //점수(장애물 충돌 횟수 판단)
-    int score;
 
     setWindow1(UIHEIGHT, UIWIDTH, start_x, start_y);
 
