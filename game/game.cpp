@@ -51,28 +51,41 @@ void explain() {
 
     setWindow2(UIHEIGHT, UIWIDTH, 0, 0);
 
-    mvprintw(UIHEIGHT / 2 - 3,
-             (UIWIDTH - strlen("1. Operate with a directional key")) / 2,
-             "1. Operat with a directional key");
+    mvprintw(UIHEIGHT / 2 - 5,
+             (UIWIDTH - strlen("1. ⇦ ⇨ 로 캐릭터를 조작하세요.")) / 2 + 7,
+             "1. ⇦ ⇨ 로 캐릭터를 조작하세요.");
+    mvprintw(
+        UIHEIGHT / 2 - 3,
+        (UIWIDTH - strlen("2. 다음 조작 전, 캐릭터가 움직이기를 기다리세요.")) /
+                2 +
+            10,
+        "2. 다음 조작 전, 캐릭터가 움직이기를 기다리세요.");
     mvprintw(
         UIHEIGHT / 2 - 1,
-        (UIWIDTH - strlen("2. 'Number of obstacles avoided', 'Stage speed' "
-                          "displayed at top of screen")) /
-            2,
-        "2. 'Number of obstacles avoided', 'Stage speed' displayed at "
-        "top of screen");
-    mvprintw(UIHEIGHT / 2 + 1, (UIWIDTH - strlen("3. A total of 6 stages")) / 2,
-             "3. A total of 6 stages");
+        (UIWIDTH -
+         strlen("3. 게임이 시작하면, 'SCORE','STAGE'가 상단에 표시됩니다.")) /
+                2 +
+            8,
+        "3. 게임이 시작하면, 'SCORE','STAGE'가 상단에 표시됩니다.");
+    mvprintw(UIHEIGHT / 2 + 1,
+             (UIWIDTH - strlen("4. 장애물 10개당 1 STAGE씩 증가합니다.")) / 2 +
+                 8,
+             "4. 장애물 10개당 1 STAGE씩 증가합니다.");
     mvprintw(
         UIHEIGHT / 2 + 3,
-        (UIWIDTH -
-         strlen("4. Increase the stage whenever 10 obstructions are avoided")) /
-            2,
-        "4. Increase the stage whenever 10 obstructions are avoided");
+        (UIWIDTH - strlen("5. 총 STAGE는 6개, CREAR 점수는 6000점입니다.")) /
+                2 +
+            6,
+        "5. 총 STAGE는 6개, CREAR 점수는 6000점입니다.");
+    mvprintw(
+        UIHEIGHT / 2 + 5,
+        (UIWIDTH - strlen("6. 게임 종료 후 RANKING을 확인해보세요:)")) / 2 + 7,
+        "6. 게임 종료 후 RANKING을 확인해보세요:)");
+
     mvprintw(UIHEIGHT - 1, (UIWIDTH - strlen("[Press Enter]")) / 2,
              "[Press Enter]");
-    refresh();
 
+    refresh();
     // 엔터쳐서 돌아가기
 }
 
