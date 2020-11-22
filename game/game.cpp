@@ -16,27 +16,6 @@ using namespace std;
 array<array<int, WIDTH>, HEIGHT> Board = {0};
 int Obstacle::total = 0;
 
-// 게임 화면 ui
-void uiBox() {
-    setWindow2(HEIGHT - 2, WIDTH + 2, 0, 3);
-    setWindow2(4, WIDTH + 2, 0, 0);
-}
-
-void showObstacle(vector<Obstacle> &obstacle) {
-    for (int i = 1; i < obstacle.size(); i++) {
-        obstacle[i].show();
-    }
-}
-
-void uiBox2(WINDOW *my_win) {
-    my_win = newwin(HEIGHT - 3, WIDTH + 2, 0, 3);
-    refresh();
-
-    box(my_win, 0, 0);
-
-    wrefresh(my_win);
-}
-
 // game 설명창
 void explain() {
     curs_set(0);
@@ -89,11 +68,11 @@ void explain() {
     // 엔터쳐서 돌아가기
 }
 
-//$게임 시작 함수
+//게임 시작 함수
 int game(int time, Character &character, vector<Obstacle> &obstacle) {
     int score = 0;
-    int input;
     score = numberOfObstacle() * 100;
+    int input;
     Board = {0};
     //화면 시작
     initscr();
@@ -108,8 +87,8 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     showState(score, time);
     character.showD();
 
+    //다음 스테이지로 넘어가는 경우 3초 대기 후 시작
     if (numberOfObstacle() != 0) {
-        //$ui와 관련된 부분으로 수정 가능
         showObstacle(obstacle);
         mvprintw(2, 1, "Game Start After 3 seconds ");
         printw("1.. ");
@@ -126,9 +105,10 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
 
     //게임 시작
     while (true) {
+        //장애물 생성
         generateObstacle(obstacle);
-        //$게임에 대한 정보가 출력됨
-        //지금은 회피한 장애물의 수, time 출력
+
+        //게임의 상태 출력 (점수, 스테이지)
         score = numberOfObstacle() * 100;
         showState(score, time);
         usleep(time);
@@ -148,18 +128,14 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
         } else {
             character.showD();
         }
-        // uiBox();
-        //$충돌했을 경우
-        //목숨이 차감되는 함수 추가&fail판단 추가
-        //지금은 한 번이라도 충돌시 FAIL 출력하고 종료
+
+        //충돌한 경우, 게임 종료
         if (crash(character.getY(), character.getX())) {
             break;
         }
 
-        //$스테이지 1개 종료
-        // 1개의 스테이지를 어떻게 구분할지에 관한 부분
-        //지금은 10개 단위로 스테이지 구분.
-        //지나간 장애물의 수가 10의 배수일 경우 지나간 장애물의 수를 반환
+        //스테이지 1개 종료
+        //지나간 장애물의 수를 반환
         if (numberOfObstacle() % MAXOB == 0 && numberOfObstacle() != 0) {
             endwin();
             return numberOfObstacle();
@@ -168,7 +144,9 @@ int game(int time, Character &character, vector<Obstacle> &obstacle) {
     endwin();
     return 0;
 }
-//캐릭터 클래스
+
+//캐릭터 클래스 구현부분
+//생성자
 Character::Character() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -176,6 +154,8 @@ Character::Character() {
         }
     }
 }
+
+//오른쪽 이동
 void Character::moveR() {
     if (location[1] >= WIDTH + 2) {
         return;
@@ -199,6 +179,7 @@ void Character::moveR() {
     }
     refresh();
 }
+
 //왼쪽으로 이동
 void Character::moveL() {
     if (location[1] <= 0) {
@@ -234,19 +215,24 @@ void Character::showD() {
     refresh();
 }
 
+//장애물 클래스 구현부분
+//생성자
 Obstacle::Obstacle() {
-    total += 1;
+    total += 1; //생성된 장애물의 수 증가
+
     srand(time(NULL));
-    length = rand() % MAX_LENGTH + 1;
+    length = rand() % MAX_LENGTH + 1; //최대 길이 이하로 장애물 생성
 
-    //출력 수정할 것
-    location[1] = rand() % (WIDTH - length) + TOPX; // TOPX~width-1-length
+    // TOPX~width-1-length 사이의 랜덤한 위치 설정
+    location[1] = rand() % (WIDTH - length) + TOPX;
 
+    //해당 위치에 장애물 저장
     for (int i = 0; i < length; i++) {
         Board[0][location[1] + i] = 1;
     }
 }
 
+//장애물 출력
 void Obstacle::show() {
     for (int i = 0; i < length; i++) {
         mvprintw(location[0], location[1] + i, "@");
@@ -254,7 +240,9 @@ void Obstacle::show() {
     refresh();
 }
 
+//장애물 이동
 void Obstacle::moveO() {
+    //장애물의 위치가 화면의 길이를 넘어서는 경우
     if (location[0] >= HEIGHT) {
         return;
     } else if (location[0] == HEIGHT - 1) {
@@ -287,18 +275,22 @@ void Obstacle::moveO() {
 
 //장애물 생성
 void generateObstacle(vector<Obstacle> &obstacle) {
+    //장애물의 수가 화면의 길이보다 큰 경우 첫번째 요소를 배열에서 삭제
     if (obstacle.size() > HEIGHT - TOPY) {
         obstacle.erase(obstacle.begin());
     }
+    //전체 장애물을 이동
     for (int i = 0; i < obstacle.size(); i++) {
         obstacle[i].moveO();
         mvprintw(WIDTH + 3, i, "%d", i);
     }
+    //새로운 장애물을 추가하고 출력
     obstacle.push_back(Obstacle());
     obstacle[obstacle.size() - 1].show();
 }
 
 //충돌 판정 함수
+//캐릭터의 위치를 받고 캐릭터와 장애물이 겹쳐 있으면 true 반환
 bool crash(int y, int x) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
@@ -310,25 +302,52 @@ bool crash(int y, int x) {
     return false;
 }
 
-void showBoard() {
-    clear();
-    for (int i = 0; i < HEIGHT; i++) {
-        for (int j = 0; j < WIDTH; j++) {
-            printw("%d", Board[i][j]);
-        }
-    }
-    refresh();
-    sleep(2);
-}
+//점수와 스테이지 출력
 void showState(int score, int time) {
     int stage = (1000000 - time) / 10000 + 1;
     mvprintw(1, 1, "score: %d stage %d", score, stage);
     refresh();
 }
+
+//회피한 장애물의 수 반환
 int numberOfObstacle() {
     int total = Obstacle::total;
     if (total < HEIGHT - TOPY + 1) {
         return 0;
     }
-    return total - HEIGHT + TOPY;
+    return total - HEIGHT + TOPY; //전체 생성된 장애물의 수 - 화면 크기
+}
+
+//전체 장애물 출력
+void showObstacle(vector<Obstacle> &obstacle) {
+    for (int i = 1; i < obstacle.size(); i++) {
+        obstacle[i].show();
+    }
+}
+
+// 게임 화면 ui
+void uiBox() {
+    setWindow2(HEIGHT - 2, WIDTH + 2, 0, 3);
+    setWindow2(4, WIDTH + 2, 0, 0);
+}
+
+void uiBox2(WINDOW *my_win) {
+    my_win = newwin(HEIGHT - 3, WIDTH + 2, 0, 3);
+    refresh();
+
+    box(my_win, 0, 0);
+
+    wrefresh(my_win);
+}
+
+// Board 저장값을 출력 (컴파일용)
+void showBoard() {
+    clear();
+    for (int i = 0; i < HEIGHT; i++) {
+        for (int j = 0; j < WIDTH; j++) {
+            mvprintw(i, j, "%d", Board[i][j]);
+        }
+    }
+    refresh();
+    sleep(2);
 }
