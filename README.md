@@ -4,7 +4,6 @@
 1. 패키지 다운로드<br>
 ncurses.h 헤더파일을 이용했습니다.<br>
 컴파일 전에 아래의 명령어를 통해 패키지를 다운로드 받으세요<br>
-
  sudo apt-get update<br>
  sudo apt-get install libncurses5-dev libncursesw5-dev<br>
 
