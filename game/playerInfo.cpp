@@ -140,8 +140,9 @@ void fileRead() {
 
     //랭킹 출력(23등 까지만 출력)
     // for (int i = 0; i < 23; i++)
-    for (int i = 0; i < 23; i++) {
-        // mvprintw사용시 이름 깨짐 현상!!!
+    for (int i = 0; i < k; i++) {
+        if (i > 22)
+            break;
         mvprintw(1 + i, 1, "%d등 NAME : %s SCORE : %d", rank_n,
                  player[i].getName().c_str(), player[i].getScore());
         /*cout << rank_n << "등 "
